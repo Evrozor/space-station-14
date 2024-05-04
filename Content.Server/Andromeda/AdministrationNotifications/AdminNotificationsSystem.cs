@@ -13,7 +13,7 @@ using Content.Server.Andromeda.AdministrationNotifications.GameTicking;
 namespace Content.Server.Andromeda.AdministrationNotifications
 {
 
-    public sealed class AdminNotificationsSystem : EntitySystem
+    public sealed partial class AdminNotificationsSystem : EntitySystem
     {
         [Dependency] private readonly IConfigurationManager _config = default!;
         private ISawmill _sawmill = default!;
@@ -26,6 +26,7 @@ namespace Content.Server.Andromeda.AdministrationNotifications
             _sawmill = Logger.GetSawmill("admin_notifications");
             SubscribeLocalEvent<AdminLoggedInEvent>(OnAdminLoggedIn);
             SubscribeLocalEvent<AdminLoggedOutEvent>(OnAdminLoggedOut);
+            InitializePickRiskItems();
             _config.OnValueChanged(AndromedaCCVars.DiscordAdminWebhook, value => _webhookUrl = value, true);
         }
 
